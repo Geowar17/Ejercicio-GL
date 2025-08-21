@@ -56,10 +56,20 @@ def dict_to_camel(data):
     return data
 
 def to_epoch(dt):
-    """Convierte datetime a timestamp epoch"""
+    """Convierte datetime a timestamp epoch o retorna el valor si ya es timestamp"""
     if isinstance(dt, datetime):
         return int(dt.timestamp())
-    return None
+    elif isinstance(dt, int):
+        return dt  # Ya es timestamp, retornar directamente
+    elif dt is None:
+        return None
+    else:
+        # Para manejar cualquier otro caso
+        try:
+            # Intentar convertir a entero
+            return int(dt)
+        except (ValueError, TypeError):
+            return None
 
 @app.route('/health', methods=['GET'])
 @cache.cached(timeout=30)
