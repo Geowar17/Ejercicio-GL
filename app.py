@@ -7,12 +7,14 @@ import mysql.connector
 from datetime import datetime
 import time
 from dataclasses import dataclass, asdict
+from flask_cors import CORS
 
 # Cargar variables de entorno desde .env
 load_dotenv()
 
 # Inicializar la aplicación Flask
 app = Flask(__name__)
+CORS(app) 
 
 # Configurar caché para mejorar el rendimiento de los endpoints
 app.config['CACHE_TYPE'] = 'SimpleCache'
