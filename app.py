@@ -83,3 +83,89 @@ def health_check():
                 conn.close()
         except:
             pass
+
+@app.route('/flights/<int:flight_id>/passengers', methods=['GET'])
+@cache.cached(timeout=60, query_string=True)
+def get_passengers(flight_id):
+    """Endpoint principal para obtener información de pasajeros de un vuelo"""
+    conn = None
+    cursor = None
+    
+    try:
+        # Establecer conexión
+        conn = get_db_connection()
+        if conn is None:
+            return jsonify({"code": 400, "errors": "could not connect to db"}), 400
+        
+        cursor = conn.cursor(dictionary=True)
+
+        # 1. Obtener información del vuelo (optimizada)
+        cursor.execute("""
+            SELECT flight_id, takeoff_date_time, takeoff_airport, 
+                   landing_date_time, landing_airport, airplane_id 
+            FROM flight 
+            WHERE flight_id = %s
+        """, (flight_id,))
+        flight = cursor.fetchone()
+        
+        if not flight:
+            return jsonify({"code": 404, "data": {}}), 404
+
+        # 2. Obtener pasajeros del vuelo (optimizada)
+        cursor.execute("""
+            SELECT 
+                p.passenger_id, p.dni, p.name, p.age, p.country,
+                bp.boarding_pass_id, bp.purchase_id, bp.seat_type_id, bp.seat_id
+            FROM passenger p
+            JOIN boarding_pass bp ON p.passenger_id = bp.passenger_id
+            WHERE bp.flight_id = %s
+        """, (flight_id,))
+        passengers = cursor.fetchall()
+
+        # 3. Obtener asientos disponibles (optimizada)
+        cursor.execute("""
+            SELECT seat_id, seat_row, seat_column, seat_type_id, airplane_id 
+            FROM seat 
+            WHERE airplane_id = %s
+        """, (flight['airplane_id'],))
+        seats = cursor.fetchall()
+
+        # 4. Aplicar lógica de asignación de asientos
+        from seating import assign_seats
+        passengers_assigned = assign_seats(passengers, seats)
+
+        # 5. Preparar respuesta
+        response = {
+            "code": 200,
+            "data": {
+                "flightId": flight['flight_id'],
+                "takeoffDateTime": to_epoch(flight['takeoff_date_time']),
+                "takeoffAirport": flight['takeoff_airport'],
+                "landingDateTime": to_epoch(flight['landing_date_time']),
+                "landingAirport": flight['landing_airport'],
+                "airplaneId": flight['airplane_id'],
+                "passengers": [dict_to_camel(p) for p in passengers_assigned],
+            }
+        }
+        
+        return jsonify(response)
+
+    except Exception as e:
+        print(f"Error inesperado: {e}")
+        return jsonify({"code": 500, "errors": "internal server error"}), 500
+    
+    finally:
+        try:
+            if cursor:
+                cursor.close()
+        except:
+            pass
+        
+        try:
+            if conn and conn.is_connected():
+                conn.close()
+        except:
+            pass
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=3000, debug=True)
