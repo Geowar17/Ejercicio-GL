@@ -95,7 +95,6 @@ def health_check():
             pass
 
 @app.route('/flights/<int:flight_id>/passengers', methods=['GET'])
-@cache.cached(timeout=60, query_string=True)
 def get_passengers(flight_id):
     """Endpoint principal para obtener información de pasajeros de un vuelo"""
     conn = None
@@ -109,7 +108,7 @@ def get_passengers(flight_id):
         
         cursor = conn.cursor(dictionary=True)
 
-        # 1. Obtener información del vuelo (optimizada)
+        # 1. Obtener información del vuelo
         cursor.execute("""
             SELECT flight_id, takeoff_date_time, takeoff_airport, 
                    landing_date_time, landing_airport, airplane_id 
@@ -121,7 +120,7 @@ def get_passengers(flight_id):
         if not flight:
             return jsonify({"code": 404, "data": {}}), 404
 
-        # 2. Obtener pasajeros del vuelo (optimizada)
+        # 2. Obtener pasajeros del vuelo
         cursor.execute("""
             SELECT 
                 p.passenger_id, p.dni, p.name, p.age, p.country,
@@ -132,30 +131,43 @@ def get_passengers(flight_id):
         """, (flight_id,))
         passengers = cursor.fetchall()
 
-        # 3. Obtener asientos disponibles (optimizada)
-        cursor.execute("""
-            SELECT seat_id, seat_row, seat_column, seat_type_id, airplane_id 
-            FROM seat 
-            WHERE airplane_id = %s
-        """, (flight['airplane_id'],))
+        # 3. Obtener asientos disponibles
+        cursor.execute("SELECT * FROM seat WHERE airplane_id = %s", (flight['airplane_id'],))
         seats = cursor.fetchall()
 
         # 4. Aplicar lógica de asignación de asientos
         from seating import assign_seats
         passengers_assigned = assign_seats(passengers, seats)
 
-        # 5. Preparar respuesta
+        # 5. Preparar respuesta - Manteniendo el orden específico
+        response_data = {
+            "flightId": flight['flight_id'],
+            "takeoffDateTime": to_epoch(flight['takeoff_date_time']),
+            "takeoffAirport": flight['takeoff_airport'],
+            "landingDateTime": to_epoch(flight['landing_date_time']),
+            "landingAirport": flight['landing_airport'],
+            "airplaneId": flight['airplane_id'],
+            "passengers": []
+        }
+
+        # Añadir pasajeros con el orden específico de campos
+        for passenger in passengers_assigned:
+            ordered_passenger = {
+                "passengerId": passenger['passenger_id'],
+                "dni": passenger['dni'],
+                "name": passenger['name'],
+                "age": passenger['age'],
+                "country": passenger['country'],
+                "boardingPassId": passenger['boarding_pass_id'],
+                "purchaseId": passenger['purchase_id'],
+                "seatTypeId": passenger['seat_type_id'],
+                "seatId": passenger['seat_id']
+            }
+            response_data['passengers'].append(ordered_passenger)
+
         response = {
             "code": 200,
-            "data": {
-                "flightId": flight['flight_id'],
-                "takeoffDateTime": to_epoch(flight['takeoff_date_time']),
-                "takeoffAirport": flight['takeoff_airport'],
-                "landingDateTime": to_epoch(flight['landing_date_time']),
-                "landingAirport": flight['landing_airport'],
-                "airplaneId": flight['airplane_id'],
-                "passengers": [dict_to_camel(p) for p in passengers_assigned],
-            }
+            "data": response_data
         }
         
         return jsonify(response)
