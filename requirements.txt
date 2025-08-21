@@ -1,3 +1,4 @@
+#project dependencies from requirements.txt
 flask==2.3.3
 mysql-connector-python==8.1.0
 python-dotenv==1.0.0
