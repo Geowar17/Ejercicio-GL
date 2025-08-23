@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  webapp:
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      # Pasa las variables de entorno de .env al contenedor
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
