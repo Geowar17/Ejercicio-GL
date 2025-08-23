@@ -11,7 +11,7 @@ Permite:
 La API está conectada a una base de datos **MySQL remota**, con lógica de reintentos y manejo de errores.  
 ## 🚀 Despliegue
 La API está desplegada en Render:  
-👉 [https://ejercicio-gl.onrender.com](https://ejercicio-gl.onrender.com/flights/1/passengers)
+👉 [https://ejercicio-gl.onrender.com](https://ejercicio-gl.onrender.com)
 
 
 ---
@@ -34,7 +34,7 @@ DB_USER=tu_usuario_de_bd
 DB_PASS=tu_contraseña_de_bd
 DB_NAME=el_nombre_de_tu_bd
 DB_PORT=3306
-PORT=5000
+PORT=3000
 ```
 
 ---
@@ -162,6 +162,10 @@ Ambas pruebas fueron exitosas ✅
 El proyecto incluye un set de pruebas automatizadas para validar la API de **Andes Airlines**.  
 Estas pruebas cubren:
 
+### Ejecución de pruebas
+
+1. python test_api.py
+
 - Health check del servidor.
 - Estructura de vuelos existentes y no existentes.
 - Validación de pasajeros.
@@ -169,9 +173,15 @@ Estas pruebas cubren:
 - Manejo de múltiples solicitudes concurrentes.
 - Reconexión de base de datos.
 
-### Ejecución de pruebas
+2. python test_db.py
 
-python test_api.py
+- Conexion base de datos.
+
+3. python test_response.py
+
+- Respuesta de conexion base de datos 
+
+
 
 ## 🗂️ Arquitectura del Sistema  
 
