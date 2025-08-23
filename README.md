@@ -39,7 +39,7 @@ PORT=5000
 1. Clonar el repositorio:  
    
    git clone <https://github.com/Geowar17/Ejercicio-GL.git>
-   cd <nombre-del-proyecto>
+ 
    
 2. Instalar dependencias:  
    
@@ -75,41 +75,13 @@ La API estará en [http://localhost:3000](http://localhost:3000).
 
 ## 📡 Endpoints Principales  
 
-### ✅ /health (GET)  
-Verifica el estado de la API y la conexión a la BD.  
 
-### ✈️ /flights/<flight_id>/passengers (GET)  
-Obtiene la información de un vuelo y la lista de pasajeros.  
-
-Ejemplo de respuesta exitosa (200):  
-
-{
-  "code": 200,
-  "data": {
-    "flightId": 1,
-    "takeoffDateTime": 1672531200,
-    "takeoffAirport": "SCL",
-    "landingDateTime": 1672538400,
-    "landingAirport": "EZE",
-    "airplaneId": 101,
-    "passengers": [
-      {
-        "passengerId": 1,
-        "dni": "12345678",
-        "name": "Juan Perez",
-        "age": 30,
-        "country": "Chile",
-        "boardingPassId": 10,
-        "purchaseId": 50,
-        "seatTypeId": 1,
-        "seatId": 25
-      }
-    ]
-  }
-}
+| Método  | Endpoint                          | Descripción                                               | Ejemplo Request             | Ejemplo Response                                                                                                                                                                                                                                                                                                                                                             |
+| ------- | --------------------------------- | --------------------------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **GET** | `/health`                         | Verifica el estado de la API y la conexión a la BD.       | `GET /health`               | `json { "code": 200, "status": "OK", "db_connection": "OK" } `                                                                                                                                                                                                                                                                                                               |
+| **GET** | `/flights/<flight_id>/passengers` | Obtiene los detalles de un vuelo y su lista de pasajeros. | `GET /flights/1/passengers` | `json { "code": 200, "data": { "flightId": 1, "takeoffDateTime": 1672531200, "takeoffAirport": "SCL", "landingDateTime": 1672538400, "landingAirport": "EZE", "airplaneId": 101, "passengers": [ { "passengerId": 1, "dni": "12345678", "name": "Juan Perez", "age": 30, "country": "Chile", "boardingPassId": 10, "purchaseId": 50, "seatTypeId": 1, "seatId": 25 } ] } } ` |
 
 
----
 
 ## 🧪 Pruebas con Postman  
 
@@ -122,12 +94,19 @@ Ejemplo de respuesta exitosa (200):
 - `http://127.0.0.1:3000/flights/1/passengers` → Lista de pasajeros del vuelo `1`.  
 La siguiente imagen muestra las pruebas realizadas de manera local:  
 
-   ![Postman-Local-health](postman/postmanlocalh.png)
-   ![Postman-Local-health-test](postman/postmanlocalht.png)  
+📷 Capturas en local:
+
+Estado del servicio
+  ![Postman-Local-health](postman/postmanlocalh.png)
+
+Estado del servicio (Test en Postman)
+  ![Postman-Local-health-test](postman/postmanlocalht.png)  
+
+Lista de pasajeros
    ![Postman-Local-lista-Pasajero](postman/postmanlocallp.png)
-   ![Postman-Local-lista-Pasajero-test](postman/postmanlocalpt.png)  
 
-
+Lista de pasajeros (Test en Postman)
+     ![Postman-Local-lista-Pasajero-test](postman/postmanlocalpt.png)  
 
 
 
@@ -149,10 +128,25 @@ De esta forma puedes validar que el despliegue en Render funciona igual que en l
 - `https://ejercicio-gl.onrender.com/flights/1/passengers`   → Lista de pasajeros del vuelo `1`.  
   
   La siguiente imagen muestra las pruebas realizadas en despliegue:  
+
+
+  📷 Capturas en Render:
+
+Estado del servicio
    ![Postman-Render-health](postman/postmanRenderh.png)
+
+Estado del servicio (Test en Postman)
    ![Postman-Render-health-test](postman/postmanRendert.png)  
+
+Lista de pasajeros
    ![Postman-Render-lista-Pasajero](postman/postmanRenderlp.png)
-   ![Postman-Render-lista-Pasajero-test](postman/postmanRenderpt.png)  
+
+Lista de pasajeros (Test en Postman)
+  ![Postman-Render-lista-Pasajero-test](postman/postmanRenderpt.png)  
+
+
+
+ 
 
 
 Ambas pruebas fueron exitosas ✅
