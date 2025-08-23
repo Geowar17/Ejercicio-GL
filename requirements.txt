@@ -1,7 +1,7 @@
 Flask==3.1.2
 Flask_Caching==2.3.1
 flask_cors==6.0.1
-
+gunicorn
 python-dotenv==1.1.1
 Requests==2.32.5
 mysql-connector-python==8.0.33
