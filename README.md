@@ -39,11 +39,10 @@ DB_NAME=el_nombre_de_tu_bd
 DB_PORT=3306
 PORT=5000
 ```
-
+---
 ## 🧪 Pruebas
 Los tests se ejecutan con **unittest**. Para correrlos localmente:
 
----
 
 ## ✅ Pruebas Unitarias
 
@@ -68,7 +67,7 @@ Ran 7 tests in 31.826s
 OK
 🎉 ¡Todas las pruebas pasaron!
 
-
+---
 
 
 ---
@@ -121,7 +120,7 @@ La API estará en [http://localhost:3000](http://localhost:3000).
 | **GET** | `/flights/<flight_id>/passengers` | Obtiene los detalles de un vuelo y su lista de pasajeros. | `GET /flights/1/passengers` | `json { "code": 200, "data": { "flightId": 1, "takeoffDateTime": 1672531200, "takeoffAirport": "SCL", "landingDateTime": 1672538400, "landingAirport": "EZE", "airplaneId": 101, "passengers": [ { "passengerId": 1, "dni": "12345678", "name": "Juan Perez", "age": 30, "country": "Chile", "boardingPassId": 10, "purchaseId": 50, "seatTypeId": 1, "seatId": 25 } ] } } ` |
 
 
-
+---
 ## 🧪 Pruebas con Postman  
 
 1. Abre **Postman**.  
@@ -147,7 +146,7 @@ Lista de pasajeros
 Lista de pasajeros (Test en Postman)
      ![Postman-Local-lista-Pasajero-test](postman/postmanlocalpt.png)  
 
-
+---
 
 ## 🌍 Pruebas en Producción (Render)
 
@@ -184,12 +183,8 @@ Lista de pasajeros (Test en Postman)
   ![Postman-Render-lista-Pasajero-test](postman/postmanRenderpt.png)  
 
 
-
- 
-
-
 Ambas pruebas fueron exitosas ✅
-
+---
 ## 🗂️ Arquitectura del Sistema  
 
 La siguiente imagen muestra la arquitectura general del sistema:  
