@@ -1,5 +1,13 @@
 # ✈️ API de Gestión de Vuelos y Pasajeros  
 
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen?style=flat-square)
+[![Deploy en Render](https://img.shields.io/badge/Render-Deploy-blue?logo=render&logoColor=white)](https://ejercicio-gl.onrender.com)
+
+
+🌍 **API en Producción**: [https://ejercicio-gl.onrender.com](https://ejercicio-gl.onrender.com)  
+
+---
+
 ## 📌 Descripción del Proyecto  
 Esta es una API web construida con **Flask** que gestiona la información de vuelos y pasajeros.  
 Permite:  
@@ -31,6 +39,37 @@ DB_NAME=el_nombre_de_tu_bd
 DB_PORT=3306
 PORT=5000
 ```
+
+## 🧪 Pruebas
+Los tests se ejecutan con **unittest**. Para correrlos localmente:
+
+---
+
+## ✅ Pruebas Unitarias
+
+El proyecto incluye un set de pruebas automatizadas para validar la API de **Andes Airlines**.  
+Estas pruebas cubren:
+
+- Health check del servidor.
+- Estructura de vuelos existentes y no existentes.
+- Validación de pasajeros.
+- Reglas de asignación de asientos.
+- Manejo de múltiples solicitudes concurrentes.
+- Reconexión de base de datos.
+
+### Ejecución de pruebas
+```bash
+python test_api.py
+✅ Resultados de Tests
+
+Ejemplo de salida al correr los tests:
+Ran 7 tests in 31.826s
+
+OK
+🎉 ¡Todas las pruebas pasaron!
+
+
+
 
 ---
 
