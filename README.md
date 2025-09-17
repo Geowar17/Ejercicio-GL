@@ -11,7 +11,7 @@ Permite:
 La API está conectada a una base de datos **MySQL remota**, con lógica de reintentos y manejo de errores.  
 ## 🚀 Despliegue
 La API está desplegada en Render:  
-👉 [https://ejercicio-gl.onrender.com](https://ejercicio-gl.onrender.com)
+👉 [https://ejercicio-gl.onrender.com](https://ejercicio-gl.onrender.com/flights/1/passengers)
 
 
 ---
